@@ -1,7 +1,7 @@
 require('dotenv').config();
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
-const Car = require('../models/CarModel'); // Import Mongoose model
+const Car = require('../models/carModel'); // Import Mongoose model
 
 // Cloudinary Configuration
 cloudinary.config({
