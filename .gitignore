@@ -1,0 +1,48 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+.env
+.DS_Store
+uploads/      # If you're saving uploads locally (though you are using Cloudinary now)
+
+# Editor Directories and OS Files
+.vscode/
+.idea/
+*.log
+*.tmp
+Thumbs.db
+
+# Build Output
+dist/
+build/
+
+# Logs
+logs/
+*.log
+logs/*.log
+pids/
+*.pid
+*.seed
+*.pid.lock
+coverage/
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Environment Files
+.env
+.env.test
+.env.local
+.env.development.local
+.env.production.local
+
+# Misc
+*.bak
+*.swp
+*.swo
+*.swn
+
+# Ignore images or files you don’t want to track locally (if any)
+public/uploads/
