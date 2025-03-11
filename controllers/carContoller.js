@@ -44,7 +44,7 @@ const createCar = async (req, res) => {
         await newCar.save();
 
         res.status(201).json({
-            message: 'Car created successfully',
+            message: '✅ Car Added successfully',
             car: newCar
         });
     } catch (error) {

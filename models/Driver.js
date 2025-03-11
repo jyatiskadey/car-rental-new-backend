@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
-const driverSchema = new mongoose.Schema({
+const DriverSchema = new mongoose.Schema({
+    driverId: { type: String, unique: true, required: true }, // Ensure it's unique
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     phone: { type: String, required: true },
-    image: { type: String, required: true }  // Cloudinary URL
-}, {
-    timestamps: true
-});
+    image: { type: String },
+}, { timestamps: true });
 
-module.exports = mongoose.model('Driver', driverSchema);
+const Driver = mongoose.model('Driver', DriverSchema);
+module.exports = Driver;
