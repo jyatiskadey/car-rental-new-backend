@@ -73,8 +73,27 @@ const getCars = async (req, res) => {
     }
 };
 
+const deleteCar = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const car = await Car.findByIdAndDelete(id);
+
+        if (!car) {
+            return res.status(404).json({ message: 'Car not found' });
+        }
+
+        res.status(200).json({ message: 'Car deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting car:', error.message);
+        res.status(500).json({
+            message: 'Internal server error',
+            error: error.message
+        });
+    }
+};
 module.exports = {
     createCar,
     upload, // This is the multer instance to use in routes
-    getCars
+    getCars,
+    deleteCar
 };

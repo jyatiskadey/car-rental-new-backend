@@ -88,7 +88,16 @@ const getCitizenProfile = async (req, res) => {
     }
 };
 
+const getAllCitizens = async (req, res) => {
+    try {
+        const citizens = await Citizen.find().sort({ createdAt: -1 });  // Latest first
+        res.status(200).json({ citizens });
+    } catch (error) {
+        console.error('Get All Citizen Error:', error.message);
+        res.status(500).json({ message: 'Failed to fetch drivers' });
+    }
+};
 
 
 
-module.exports = { createCitizen, loginCitizen, getCitizenProfile };
+module.exports = { createCitizen, loginCitizen, getCitizenProfile, getAllCitizens };
