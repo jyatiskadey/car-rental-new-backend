@@ -78,7 +78,20 @@ const getAllDrivers = async (req, res) => {
     }
 };
 
+const getAllDriverNames = async (req, res) => {
+    try {
+        const driverNames = await Driver.find({}, 'name'); // Fetch only 'name' field
+        res.status(200).json({ driverNames });
+    } catch (error) {
+        console.error('Get Driver Names Error:', error.message);
+        res.status(500).json({ message: 'Failed to fetch driver names' });
+    }
+};
+
+
+
 module.exports = {
     createDriver,
-    getAllDrivers
+    getAllDrivers,
+    getAllDriverNames
 };

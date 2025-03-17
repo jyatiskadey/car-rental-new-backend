@@ -2,7 +2,7 @@ require('dotenv').config();
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const Car = require('../models/carModel'); // Import Mongoose model
-
+const Driver = require('../models/Driver');
 // Cloudinary Configuration
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -15,17 +15,23 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // Create Car - Save to MongoDB with Cloudinary Image Upload
-const createCar = async (req, res) => {
+const AddCar = async (req, res) => {
     try {
-        const { name, model, price } = req.body;
+        const { name, model, price, driverName } = req.body;
         const file = req.file;
 
         // Input Validations
-        if (!name || !model || !price) {
-            return res.status(400).json({ message: 'All fields (name, model, price) are required' });
+        if (!name || !model || !price || !driverName) {
+            return res.status(400).json({ message: 'All fields (name, model, price, driverName) are required' });
         }
         if (!file) {
             return res.status(400).json({ message: 'Image file is required' });
+        }
+
+        // Check if driver exists
+        const existingDriver = await Driver.findOne({ name: driverName.trim() });
+        if (!existingDriver) {
+            return res.status(404).json({ message: 'Driver not found. Please register the driver first.' });
         }
 
         // Upload image to Cloudinary
@@ -38,6 +44,7 @@ const createCar = async (req, res) => {
             name: name.trim(),
             model: model.trim(),
             price: parseFloat(price),
+            driverName: driverName.trim(),
             imageUrl: result.secure_url
         });
 
@@ -56,10 +63,14 @@ const createCar = async (req, res) => {
     }
 };
 
+
 // Get All Cars - Fetch from MongoDB
 const getCars = async (req, res) => {
     try {
-        const cars = await Car.find().sort({ createdAt: -1 }); // Sort by latest first
+        const cars = await Car.find()
+            .populate('driverName', 'name') // Populating driver name (assuming driverName is a reference to Driver model)
+            .sort({ createdAt: -1 }); // Sort by latest first
+
         res.status(200).json({
             message: 'Cars fetched successfully',
             cars
@@ -72,6 +83,7 @@ const getCars = async (req, res) => {
         });
     }
 };
+    
 
 const deleteCar = async (req, res) => {
     try {
@@ -92,7 +104,7 @@ const deleteCar = async (req, res) => {
     }
 };
 module.exports = {
-    createCar,
+    AddCar,
     upload, // This is the multer instance to use in routes
     getCars,
     deleteCar

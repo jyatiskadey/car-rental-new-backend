@@ -19,6 +19,11 @@ const carSchema = new mongoose.Schema({
     imageUrl: {
         type: String,
         required: true
+    },
+    driverName: {
+        type: String,
+        required: true,
+        trim: true
     }
 }, {
     timestamps: true // adds createdAt and updatedAt fields automatically
